@@ -220,17 +220,6 @@
     </div>
     
     <script defer>
-        // Settings
-
-        require('dotenv').config();
-
-        AWS.config.update({
-            region: 'ap-northeast-2',
-            accessKeyId: process.env.ACCESS_KEY_ID,
-            secretAccessKey: process.env.SECRET_ACCESS_KEY
-        });
-        const dynamodb = new AWS.DynamoDB();
-
         // nicknames of expeditions
         const Amannas = [
             '로헨델뷰티유튜버스카우터',
@@ -353,16 +342,23 @@
                             'nickname': { S: nickname }
                         }
                     };
-
-                    dynamodb.getItem(params, (err, data) => {
-                        if (err) {
-                            console.error('Error', err);
-                        } else {
-                            let item = data.Item;
-                            let character = createCharacter(owner, nickname, item.class.S, item.level.N, item.state.S, item.engrave.S);
-                            characterContainter.appendChild(character);
-                            loadContentImages(nickname);
-                        }
+                    
+                    fetch('/.netlify/functions/getItem', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(params),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        let item = data.Item;
+                        let character = createCharacter(owner, nickname, item.class.S, item.level.N, item.state.S, item.engrave.S);
+                        characterContainter.appendChild(character);
+                        loadContentImages(nickname);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
                     });
                 }
             }
@@ -797,16 +793,23 @@
                 }
             };
 
-            dynamodb.updateItem(params, (err, data) => {
-                if (err) {
-                    console.error('Error updating item:', err);
-                } else {
-                    console.log('Item updated successfully:', data);
+            fetch('/.netlify/functions/updateItem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
 
-                    let characterDiv = document.getElementById(nickname);
-                    characterDiv.dataset.state = newState;
-                    loadContentImages(nickname);
-                }
+                let characterDiv = document.getElementById(nickname);
+                characterDiv.dataset.state = newState;
+                loadContentImages(nickname);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
             });
         }
 
@@ -894,17 +897,24 @@
                     }
                 };
 
-                dynamodb.updateItem(params, (err, data) => {
-                    if (err) {
-                        console.error('Error updating item:', err);
-                    } else {
-                        console.log('Item updated successfully:', data);
+                fetch('/.netlify/functions/updateItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(params),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
 
-                        let levelSpan = document.getElementById(nickname + "_level");
-                        let characterInfoLevel = document.getElementById("character_info_level");
-                        levelSpan.textContent = newLevel;
-                        characterInfoLevel.textContent = newLevel;
-                    }
+                    let levelSpan = document.getElementById(nickname + "_level");
+                    let characterInfoLevel = document.getElementById("character_info_level");
+                    levelSpan.textContent = newLevel;
+                    characterInfoLevel.textContent = newLevel;
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
                 });
             }
         }
