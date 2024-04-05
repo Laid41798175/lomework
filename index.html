@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lomework</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #333;
+        }
+        h1 {
+            color: #fff;
+            font-family: vendana, sans-serif;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #fff;
+        }
+        h3 {
+            color: #000;
+        }
+        .expedition {
+            margin-top: 10px;
+        }
+        .character-container {
+            display: flex;
+            justify-content: center;
+        }
+        .character {
+            border: 1px solid #fff;
+            padding: 10px;
+            margin: 10px;
+            max-width: 400px;
+        }
+        .character img {
+            width: 60px;
+            height: 60px;
+        }
+        .circle {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-size: cover;
+            background-color: #333;
+            color: #333;
+            border: 2px solid white; /* 하얀색 선 적용 */
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 180px; /* 필요에 따라 높이 조정 */
+            background-color: #333;
+            color: white;
+            display: none;
+            justify-content: space-around; /* 가운데 정렬 */
+            align-items: center; /* 아이템들을 세로 중앙으로 정렬 */
+        }
+        .content {
+            margin: 0 10px; /* 양 옆 마진으로 아이템 간격 조정 */
+        }
+        .content img {
+            width: 180px; /* 이미지 너비를 40px로 설정 */
+            height: 180px; /* 이미지 높이를 40px로 설정 */
+        }
+        .footer-case {
+            padding-bottom: 0px;
+        }
+        .message-box {
+            position: fixed; /* 화면 중앙에 배치 */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 20px;
+            display: none; /* 기본적으로 숨김 */
+            z-index: 1000; /* 다른 요소들 위에 표시 */
+        }
+
+        .modal {
+            display: none; /* 모달을 기본적으로 숨김 */
+            position: fixed; /* 고정 위치 */
+            z-index: 1; /* 다른 요소 위에 표시 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* 스크롤 허용 */
+            background-color: rgb(0,0,0); /* 반투명 배경 */
+            background-color: rgba(0,0,0,0.4); /* 반투명 배경 (모바일에서는 더 투명하게) */
+        }  
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 모달이 화면의 중앙에 표시되도록 마진 설정 */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* 모달의 너비 */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+          
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1016.0.min.js"></script>
+
+    <h1>Lomework</h1>
+
+    <!-- Amanna -->
+    <div class="expedition">
+        <div class="character-container" id="Amanna_container">
+            <h2>Amanna</h2>
+        </div>
+    </div>
+    <!-- BiJoCham -->
+    <div class="expedition">
+        <div class="character-container" id="BiJoCham_container">
+            <h2>BiJoCham</h2>
+        </div>
+    </div>
+    <!-- Ellena -->
+    <div class="expedition">
+        <div class="character-container" id="Ellena_container">
+            <h2>Ellena</h2>
+        </div>
+    </div>
+    <!-- LZ4 -->
+    <div class="expedition">
+        <div class="character-container" id="LZ4_container">
+            <h2>LZ4</h2>
+        </div>
+    </div>
+    <!-- NeHal0 -->
+    <div class="expedition">
+        <div class="character-container" id="NeHal0_container">
+            <h2>NeHal0</h2>
+        </div>
+    </div>
+    <!-- ZeDo -->
+    <div class="expedition">
+        <div class="character-container" id="ZeDo_container">
+            <h2>ZeDo</h2>
+        </div>
+    </div>
+    <div class="footer-case"></div>
+
+    <!-- Contents -->
+    <div class="footer" id="footer_content">
+        <div class="content">
+            <img id="content_Valtan" src="images/raids/Valtan.webp" alt="Valtan" onclick="selectValtan()">
+        </div>
+        <div class="content" id="content_Biackiss">
+            <img id="content_Biackiss" src="images/raids/Biackiss.webp" alt="Biackiss" onclick="selectBiackiss()">
+        </div>
+        <div class="content" id="content_Kouku-Saton">
+            <img id="content_Kouku-Saton" src="images/raids/Kouku-Saton.webp" alt="Kouku-Saton" onclick="selectKoukuSaton()">
+        </div>
+        <div class="content" id="content_Abrelshud3">
+            <img id="content_Abrelshud3" src="images/raids/Abrelshud3.webp" alt="Abrelshud3" onclick="selectAbrelshud3()">
+        </div>
+        <div class="content" id="content_Abrelshud">
+            <img id="content_Abrelshud" src="images/raids/Abrelshud.webp" alt="Abrelshud" onclick="selectAbrelshud()">
+        </div>
+        <div class="content" id="content_Kayangel">
+            <img id="content_Kayangel" src="images/raids/Kayangel.webp" alt="Kayangel" onclick="selectKayangel()">
+        </div>
+        <div class="content" id="content_Illiakan">
+            <img id="content_Illiakan" src="images/raids/Illiakan.webp" alt="Illiakan" onclick="selectIlliakan()">
+        </div>
+        <div class="content" id="content_Voldis">
+            <img id="content_Voldis" src="images/raids/Voldis.webp" alt="Voldis" onclick="selectVoldis()">
+        </div>
+    </div>
+
+    <!-- Message Box -->
+    <div class="message-box" id="message_box"></div>
+
+    <!-- Warning Modal -->
+    <div id="warning_modal" class="modal">
+        <div class="modal-content">
+            <p id="modal_text"></p>
+            <button id="accept_button">Accept</button>
+            <button id="decline_button" onclick="hideModal()">Decline</button>
+        </div>      
+    </div>
+
+    <!-- Character Info Modal -->
+    <div id="character_info_modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideCharacterInfo()">&times;</span>
+            <h3 id="character_info_owner">Owner from DEW</h3>
+            <h3 id="character_info_nickname">Somewhat Cool Nickname</h3>
+            <p id="character_info_engrave">Class which needs Buff</p>
+            <p>레벨: <span id="character_info_level">0</span> <button onclick="updateLevel()">Edit Level</button></p>
+            <button id="character_info_reset" onclick="resetState()">Reset</button>
+        </div>
+    </div>
+    
+    <script defer>
+        // Settings
+
+        require('dotenv').config();
+
+        AWS.config.update({
+            region: 'ap-northeast-2',
+            accessKeyId: process.env.ACCESS_KEY_ID,
+            secretAccessKey: process.env.SECRET_ACCESS_KEY
+        });
+        const dynamodb = new AWS.DynamoDB();
+
+        // nicknames of expeditions
+        const Amannas = [
+            '로헨델뷰티유튜버스카우터',
+            '베른엄원식도배협회장리퍼',
+            '티에프티모바일두동등장',
+            '절정절제하기',
+            '너무흥분해서총이나왔네요',
+            '매칭수락제일늦게누른사람'
+        ];
+        // TODO
+        const BiJoChams = [
+            '비수처럼꽂히는조용한참격',
+            '비참하게조각내는참수의낫',
+            '비상에조예깊은참새한마리',
+            '비빔밥에조금씩참기름추가'
+        ];
+        
+        const Ellenas = [
+            '엄마가우산챙기라고했어요',
+            '카운터는권왕이처리했다구',
+            '디스토션어디로탈지맞혀봐',
+            '걷지말고폴짝폴짝뛰어가요',
+            '도발군단장민진',
+            '배고프면맛있는거먹어야지'
+        ];
+        
+        const LZ4s = [
+            '공익군단장조영',
+            'LedZeppelin4',
+            '베른요양원관짝춤머신인파',
+            '건루카스의딜링은차갑다',
+            '명왕은못말려',
+            '뇌광핵'
+        ];
+        
+        const NeHal0s = [
+            '버서커보다예쁜슬레이어',
+            '박춘배할아버지최후의폭주',
+            '머쓱군단장경민',
+            '장거리카운터를성공한리퍼',
+            '홀나보다알잘낳는도화가',
+            '아만젠더락클래스'
+        ];
+        
+        const ZeDos = [
+            '유치원간식도둑서머너',
+            '군인들탄피도둑홀리나이트',
+            '서울대학식빌런스트라이커',
+            '비틱군단장짱규',
+            '청소년성장판도둑건슬링어',
+            '초등학교제티도둑창술사'
+        ];
+
+        // expedition tuples
+        const expeditions = [
+            ['Amanna', Amannas],
+            ['BiJoCham', BiJoChams],
+            ['Ellena', Ellenas],
+            ['LZ4', LZ4s],
+            ['NeHal0', NeHal0s],
+            ['ZeDo', ZeDos]
+        ];
+
+        const contents = [
+            "Valtan",
+            "Biackiss",
+            "Kouku-Saton",
+            "Abrelshud",
+            "Kayangel",
+            "Illiakan",
+            "Voldis"
+        ];
+
+        let selectedCharacters = [];
+
+        function createCharacter(owner, nickname, _class, level, state, engrave) {
+            let character_tuple = [owner, nickname, _class, level, state, engrave];
+
+            let characterDiv = document.createElement('div');
+            characterDiv.classList.add('character');
+            characterDiv.id = nickname;
+            characterDiv.dataset.state = state;
+
+            let classIcon = document.createElement('img');
+            classIcon.src = "images/classes/" + _class + ".svg";
+            classIcon.onclick = () => clickCharacter(character_tuple);
+            classIcon.ondblclick = () => showCharacterInfo(character_tuple);
+            classIcon.alt = _class;
+            characterDiv.appendChild(classIcon);
+
+            let levelSpan = document.createElement('h1');
+            levelSpan.id = nickname + "_level";
+            levelSpan.textContent = level;
+            characterDiv.appendChild(levelSpan);
+
+            for (let i = 0; i < 3; i++) {
+                let contentImage = createContentImage();
+                contentImage.id = nickname + "_content_" + i;
+                characterDiv.appendChild(contentImage);
+            }
+
+            return characterDiv;
+        }
+
+        function createContentImage(content, i) {
+            let contentImage = document.createElement('div');
+            contentImage.classList.add("circle");
+
+            return contentImage;
+        }
+
+        function loadCharacters() {
+            for (let [owner, nicknames] of expeditions) {
+                let characterContainter = document.getElementById(owner + "_container");
+                for (let nickname of nicknames) {
+                    const params = {
+                        TableName: 'expedition',
+                        Key: {
+                            'owner': { S: owner },
+                            'nickname': { S: nickname }
+                        }
+                    };
+
+                    dynamodb.getItem(params, (err, data) => {
+                        if (err) {
+                            console.error('Error', err);
+                        } else {
+                            let item = data.Item;
+                            let character = createCharacter(owner, nickname, item.class.S, item.level.N, item.state.S, item.engrave.S);
+                            characterContainter.appendChild(character);
+                            loadContentImages(nickname);
+                        }
+                    });
+                }
+            }
+        }
+
+        function loadContentImages(nickname) {
+            let cnt = 0;
+            let characterDiv = document.getElementById(nickname);
+            let state = characterDiv.dataset.state;
+            for (let i = 0; i < state.length; i++) {
+                if (state.charAt(i) == 'a') { // 컨텐츠 진행 가능
+                    continue;
+                } else if (state.charAt(i) == 'b') { // 컨텐츠 클리어 (아브렐슈드 4관문 진행 완료)
+                    editContentImage(nickname, cnt, contents[i]);
+                    cnt++;
+                } else if (state.charAt(i) == 'c') { // 아브렐슈드 진행 가능 - 4관문 진행 불가 (지난 주 클리어)
+                    continue;
+                } else if (state.charAt(i) == 'd') { // 아브렐슈드 3관문 진행 완료 - 4관문 진행 가능
+                    editContentImage(nickname, cnt, "Abrelshud3");
+                    cnt++;
+                } else if (state.charAt(i) == 'e') { // 아브렐슈드 3관문 진행 완료 - 4관문 진행 불가 (지난 주 클리어)
+                    editContentImage(nickname, cnt, "Abrelshud3x");
+                    cnt++;
+                }
+            }
+        }
+
+        function checkContent(state, content, abrelshud4=false) {
+            if (content == 3 && abrelshud4) { // Abrelshud 4관문
+                return state.charAt(content) == 'd'; // 3관문 진행 완료 - 4관문 진행 가능 시에만
+            }
+            
+            let cnt = 0;
+            for (let i = 0; i < state.length; i++) {
+                if (state.charAt(i) == 'b' || state.charAt(i) == 'd' || state.charAt(i) == 'e') {
+                    if (i == content) {
+                        return false;
+                    }
+                    cnt++;
+                }
+            }
+            return cnt < 3;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCharacters();
+        });
+
+        function selectValtan() {
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1445) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[0] != 'a') {
+                    showMessage(nickname + " has cleared Valtan already!");
+                    return;
+                }
+            }
+
+            startValtan();
+        }
+
+        function startValtan() {
+            hideModal();
+            editState(0);
+            resetArray();
+        }
+
+        function selectBiackiss() {
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1460) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[1] != 'a') {
+                    showMessage(nickname + " has cleared Biackiss already!");
+                    return;
+                }
+            }
+
+            startBiackiss();
+        }
+
+        function startBiackiss() {
+            hideModal();
+            editState(1);
+            resetArray();
+        }
+
+        function selectKoukuSaton() {
+            if (4 < selectedCharacters.length) {
+                showMessage("쿠크세이튼은 4인 컨텐츠입니다!");
+                return;
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1475) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[2] != 'a') {
+                    showMessage(nickname + " has cleared Kouku-Saton already!");
+                    return;
+                }
+            }
+
+            startKoukuSaton();
+        }
+
+        function startKoukuSaton() {
+            hideModal();
+            editState(2);
+            resetArray();
+        }
+
+        function selectAbrelshud3() {
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1500) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[3] != 'a' && state[3] != 'c') {
+                    showMessage(nickname + " has cleared Abrelshud 1-3 already!");
+                    return;
+                }
+            }
+
+            let normal = selectedCharacters[0][3] < 1540;
+            for (let character of selectedCharacters) {
+                let level = character[3];
+                if (normal) {
+                    if (1540 <= level) {
+                        let acceptButton = document.getElementById("accept_button");
+                        acceptButton.onclick = () => startAbrelshud();
+                        showModal("하12노3을 입장할 캐릭터가 노말에 가게 됩니다. 그래도 괜찮나요?");
+                        return;
+                    }
+                } else {
+                    if (level < 1540) {
+                        let acceptButton = document.getElementById("accept_button");
+                        acceptButton.onclick = () => startAbrelshud();
+                        showModal("하12노3을 입장할 캐릭터가 노말에 가게 됩니다. 그래도 괜찮나요?");
+                        return;
+                    }
+                }
+            }
+            startAbrelshud3();
+        }
+
+        function startAbrelshud3() {
+            hideModal();
+            editState(3);
+            resetArray();            
+        }
+
+        function selectAbrelshud() {
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1520) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[3] == 'a') {
+                    showMessage(nickname + " has not cleared Abrelshud 1-3 yet!");
+                    return;
+                } else if (state[3] == 'b') {
+                    showMessage(nickname + " has cleared Abrelshud 4 already!");
+                    return;
+                } else if (state[3] == 'c' || state[3] == 'e') {
+                    showMessage(nickname + " has cleared Abrelshud 4 last week!");
+                    return;
+                } else if (state[3] == 'd') {
+                    continue;
+                }
+            }
+
+            let normal = selectedCharacters[0][3] < 1560;
+            for (let character of selectedCharacters) {
+                let level = character[3];
+                if (normal) {
+                    if (1560 <= level) {
+                        let acceptButton = document.getElementById("accept_button");
+                        acceptButton.onclick = () => startAbrelshud();
+                        showModal("하드 아브렐슈드 4관문을 입장할 캐릭터가 노말에 가게 됩니다. 그래도 괜찮나요?");
+                        return;
+                    }
+                } else {
+                    if (level < 1560) {
+                        let acceptButton = document.getElementById("accept_button");
+                        acceptButton.onclick = () => startAbrelshud();
+                        showModal("하드 아브렐슈드 4관문을 입장할 캐릭터가 노말에 가게 됩니다. 그래도 괜찮나요?");
+                        return;
+                    }
+                }
+            }
+            startAbrelshud();
+        }
+
+        function startAbrelshud() {
+            hideModal();
+            editState(3, true);
+            resetArray();
+        }
+
+        function selectKayangel() {
+            if (4 < selectedCharacters.length) {
+                showMessage("카양겔은 4인 컨텐츠입니다!");
+                return;
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1540) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[4] != 'a') {
+                    showMessage(nickname + " has cleared Kayangel already!");
+                    return;
+                }
+            }
+
+            let normal = selectedCharacters[0][3] < 1580;
+            for (let character of selectedCharacters) {
+                let level = character[3];
+                if (normal) {
+                    if (1580 <= level) {
+                        let acceptButton = document.getElementById("accept_button");
+                        acceptButton.onclick = () => startKayangel();
+                        showModal("하드 카양겔을 입장할 캐릭터가 노말에 가게 됩니다. 그래도 괜찮나요?");
+                        return;
+                    }
+                } else {
+                    if (level < 1580) {
+                        let acceptButton = document.getElementById("accept_button");
+                        acceptButton.onclick = () => startKayangel();
+                        showModal("하드 카양겔을 입장할 캐릭터가 노말에 가게 됩니다. 그래도 괜찮나요?");
+                        return;
+                    }
+                }
+            }
+            startKayangel();
+        }
+
+        function startKayangel() {
+            hideModal();
+            editState(4);
+            resetArray();
+        }
+
+        function selectIlliakan() {
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1580) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[5] != 'a') {
+                    showMessage(nickname + " has cleared Illiakan already!");
+                    return;
+                }
+            }
+
+            startIlliakan();
+        }
+
+        function startIlliakan() {
+            hideModal();
+            editState(5);
+            resetArray();
+        }
+
+        function selectVoldis() {
+            if (4 < selectedCharacters.length) {
+                showMessage("상아탑은 4인 컨텐츠입니다!");
+                return;
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1600) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[6] != 'a') {
+                    showMessage(nickname + " has cleared Voldis already!");
+                    return;
+                }
+            }
+
+            let normal = selectedCharacters[0][3] < 1620;
+            for (let character of selectedCharacters) {
+                let level = character[3];
+                if (normal) {
+                    if (1620 <= level) {
+                        let acceptButton = document.getElementById("accept_button");
+                        acceptButton.onclick = () => startVoldis();
+                        showModal("상하탑을 입장할 캐릭터가 상노탑에 가게 됩니다. 그래도 괜찮나요?");
+                        return;
+                    }
+                } else {
+                    if (level < 1620) {
+                        let acceptButton = document.getElementById("accept_button");
+                        acceptButton.onclick = () => startVoldis();
+                        showModal("상하탑을 입장할 캐릭터가 상노탑에 가게 됩니다. 그래도 괜찮나요?");
+                        return;
+                    }
+                }
+            }
+            startVoldis();
+        }
+
+        function startVoldis() {
+            hideModal();
+            editState(6);
+            resetArray();
+        }
+        
+        function clickCharacter(character) {
+            if (selectedCharacters.includes(character)) {
+                removeFromArray(character);
+            } else {
+                checkAddable(character);
+            }
+        }
+
+        function editState(content, abrelshud4=false){
+            for (let character of selectedCharacters) {
+                let owner = character[0];
+                let nickname = character[1];
+                let stateArray = document.getElementById(nickname).dataset.state.split('');
+                if (content == 3) { // abrelshud
+                    if (abrelshud4) { // 3관문 진행 완료 - 4관문 진행 가능
+                        stateArray[3] = 'b'; // 컨텐츠 클리어 - 4관문 진행 완료
+                    } else { // 아브렐슈드 1-3관문
+                        if (stateArray[3] == 'a') { // 컨텐츠 진행 가능
+                            stateArray[3] = 'd'; // 3관문 진행 완료 - 4관문 진행 가능
+                        } else { // stateArray[3] == 'c' // 컨텐츠 진행 가능 - 4관문 진행 불가 (지난 주 클리어)
+                            stateArray[3] = 'e'; // 3관문 진행 완료 - 4관문 진행 불가 (지난 주 클리어)
+                        }
+                    }
+                } else {
+                    stateArray[content] = 'b'; // 컨텐츠 클리어
+                }
+                let newState = stateArray.join('');
+                updateState(owner, nickname, newState);
+            }
+        }
+
+        function editContentImage(nickname, i, _content) {
+            let contentImage = document.getElementById(nickname + "_content_" + i);
+            contentImage.style.backgroundImage = 'url("images/raids/' + _content + '.webp")';
+        }
+
+        function resetState() {
+            let owner = document.getElementById("character_info_owner").textContent;
+            let nickname = document.getElementById("character_info_nickname").textContent;
+            for (let i = 0; i < 3; i++) {
+                let contentImage = document.getElementById(nickname + "_content_" + i);
+                contentImage.style.backgroundImage = '';
+            }
+            updateState(owner, nickname, "aaaaaaa");
+        }
+        
+        function updateState(owner, nickname, newState) {
+
+            const params = {
+                TableName: 'expedition', // 테이블 이름
+                Key: {
+                    'owner': { S: owner }, // 파티션 키
+                    'nickname': { S: nickname } // 정렬 키 (있는 경우)
+                },
+                UpdateExpression: 'SET #state = :newState', // 업데이트할 속성
+                ExpressionAttributeNames: { // 예약어로 지정된 속성 이름을 특수 문자로 둘러싼다
+                    '#state': 'state' // 예약어 'level'에 대응하는 특수 문자
+                },
+                ExpressionAttributeValues: {
+                    ':newState': { S: newState } // 새로운 값
+                }
+            };
+
+            dynamodb.updateItem(params, (err, data) => {
+                if (err) {
+                    console.error('Error updating item:', err);
+                } else {
+                    console.log('Item updated successfully:', data);
+
+                    let characterDiv = document.getElementById(nickname);
+                    characterDiv.dataset.state = newState;
+                    loadContentImages(nickname);
+                }
+            });
+        }
+
+        // selectedCharacters 의 조작을 담당하는 함수들
+        function resetArray(){
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let characterDiv = document.getElementById(nickname);
+                characterDiv.style.borderColor = '#fff';
+            }
+            selectedCharacters = [];
+            document.querySelector('.footer').style.display = 'none';
+            document.querySelector('.footer-case').style.paddingBottom = '0px';
+        }
+        
+        function checkAddable(character){
+            let owner = character[0];
+            for (let selectedCharacter of selectedCharacters) {
+                if (owner == selectedCharacter[0]) {
+                    showMessage("Select only 1 character per 1 expedition!");
+                    return;
+                }
+            }
+
+            let nickname = character[1];
+            let state = document.getElementById(nickname).dataset.state;
+            let cnt = 0;
+            for (let char of state) {
+                if (char == 'b' | char == 'e'){
+                    cnt++;
+                }
+            }
+            if (cnt == 3) {
+                showMessage(nickname + " has cleared 3 contents already!")
+                return;
+            }
+
+            addToArray(character);
+        }
+
+        function addToArray(character){
+            if (selectedCharacters.length == 0) {
+                document.querySelector('.footer').style.display = 'flex';
+                document.querySelector('.footer-case').style.paddingBottom = '200px';
+            }
+            selectedCharacters.push(character);
+            let nickname = character[1];
+            let characterDiv = document.getElementById(nickname);
+            characterDiv.style.borderColor = '#ff0000';
+        }
+
+        function removeFromArray(character) {
+            let index = selectedCharacters.indexOf(character);
+            if (index > -1) {
+                selectedCharacters.splice(index, 1);
+                let nickname = character[1];
+                let characterDiv = document.getElementById(nickname);
+                characterDiv.style.borderColor = '#fff';
+            }
+            if (selectedCharacters.length == 0) {
+                document.querySelector('.footer').style.display = 'none';
+                document.querySelector('.footer-case').style.paddingBottom = '0px';
+            }
+        }
+
+        // 캐릭터의 레벨을 수정하는 함수
+        function updateLevel() {
+            let owner = document.getElementById("character_info_owner").textContent;
+            let nickname = document.getElementById("character_info_nickname").textContent;
+            let newLevel = parseInt(prompt("변경할 레벨을 입력하세요 (소수점 버림): "));
+
+            if (!isNaN(newLevel)) {
+                const params = {
+                    TableName: 'expedition', // 테이블 이름
+                    Key: {
+                        'owner': { S: owner }, // 파티션 키
+                        'nickname': { S: nickname } // 정렬 키 (있는 경우)
+                    },
+                    UpdateExpression: 'SET #level = :newValue', // 업데이트할 속성
+                    ExpressionAttributeNames: { // 예약어로 지정된 속성 이름을 특수 문자로 둘러싼다
+                        '#level': 'level' // 예약어 'level'에 대응하는 특수 문자
+                    },
+                    ExpressionAttributeValues: {
+                        ':newValue': { N: newLevel.toString() } // 새로운 값
+                    }
+                };
+
+                dynamodb.updateItem(params, (err, data) => {
+                    if (err) {
+                        console.error('Error updating item:', err);
+                    } else {
+                        console.log('Item updated successfully:', data);
+
+                        let levelSpan = document.getElementById(nickname + "_level");
+                        let characterInfoLevel = document.getElementById("character_info_level");
+                        levelSpan.textContent = newLevel;
+                        characterInfoLevel.textContent = newLevel;
+                    }
+                });
+            }
+        }
+
+        function showMessage(text) {
+            let messageBox = document.getElementById("message_box");
+            messageBox.textContent = text;
+            messageBox.style.display = "block"; // 메시지 박스를 표시
+        
+            // 1초(1000ms) 후에 메시지 박스를 다시 숨김
+            setTimeout(function() {
+                messageBox.style.display = "none";
+            }, 1000);
+        }
+
+        function showCharacterInfo(character) {
+            let owner = character[0];
+            let nickname = character[1];
+            let level = document.getElementById(nickname + "_level").textContent;
+            let engrave = character[5];
+
+            document.getElementById("character_info_owner").textContent = owner;
+            document.getElementById("character_info_nickname").textContent = nickname;
+            document.getElementById("character_info_level").textContent = level;
+            document.getElementById("character_info_engrave").textContent = engrave;
+
+            let characterInfo = document.getElementById("character_info_modal");
+            characterInfo.style.display = "block";
+        }
+
+        function hideCharacterInfo() {
+            let characterInfo = document.getElementById("character_info_modal");
+            characterInfo.style.display = "none";
+        }
+
+        function showModal(text) {
+            let modalText = document.getElementById("modal_text");
+            modalText.textContent = text;
+
+            let modal = document.getElementById("warning_modal");
+            modal.style.display = "block"; // 모달을 표시
+        }
+
+        function hideModal() {
+            let modal = document.getElementById("warning_modal");
+            modal.style.display = "none"; // 모달을 숨김
+        }
+
+        function clickDeclineButton() {
+            hideModal();
+        }
+
+    </script>
+</body>
+</html>
