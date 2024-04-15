@@ -779,6 +779,10 @@
         
         function updateState(owner, nickname, newState) {
 
+            let characterDiv = document.getElementById(nickname);
+            characterDiv.dataset.state = newState;
+            loadContentImages(nickname);
+
             const params = {
                 TableName: 'expedition', // 테이블 이름
                 Key: {
@@ -804,10 +808,6 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-
-                let characterDiv = document.getElementById(nickname);
-                characterDiv.dataset.state = newState;
-                loadContentImages(nickname);
             })
             .catch((error) => {
                 console.error('Error:', error);
