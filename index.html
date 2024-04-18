@@ -299,10 +299,7 @@
         function createCharacter(owner, nickname, _class, level, state, engrave) {
             let character_tuple = [owner, nickname, _class, level, state, engrave];
 
-            let characterDiv = document.createElement('div');
-            characterDiv.classList.add('character');
-            characterDiv.id = nickname;
-            characterDiv.dataset.state = state;
+            let characterDiv = document.getElementById(nickname);
 
             let classIcon = document.createElement('img');
             classIcon.src = "images/classes/" + _class + ".svg";
@@ -331,6 +328,20 @@
 
             return contentImage;
         }
+        
+        function createCharacterDiv() {
+            for (let [owner, nicknames] of expeditions) {
+                let characterContainter = document.getElementById(owner + "_container");
+                for (let nickname of nicknames) {
+                    let characterDiv = document.createElement('div');
+                    characterDiv.classList.add('character');
+                    characterDiv.id = nickname;
+                    // characterDiv.dataset.state = state;
+
+                    characterContainter.appendChild(characterDiv);
+                }
+            }
+        }
 
         function loadCharacters() {
             for (let [owner, nicknames] of expeditions) {
@@ -354,8 +365,8 @@
                     .then(response => response.json())
                     .then(data => {
                         let item = data.Item;
-                        let character = createCharacter(owner, nickname, item.class.S, item.level.N, item.state.S, item.engrave.S);
-                        characterContainter.appendChild(character);
+                        createCharacter(owner, nickname, item.class.S, item.level.N, item.state.S, item.engrave.S);
+                        // characterContainter.appendChild(character);
                         loadContentImages(nickname);
                     })
                     .catch(error => {
@@ -405,6 +416,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            createCharacterDiv();
             loadCharacters();
         });
 
