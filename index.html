@@ -300,6 +300,7 @@
             let character_tuple = [owner, nickname, _class, level, state, engrave];
 
             let characterDiv = document.getElementById(nickname);
+            characterDiv.dataset.state = state;
 
             let classIcon = document.createElement('img');
             classIcon.src = "images/classes/" + _class + ".svg";
@@ -336,7 +337,7 @@
                     let characterDiv = document.createElement('div');
                     characterDiv.classList.add('character');
                     characterDiv.id = nickname;
-                    // characterDiv.dataset.state = state;
+                    characterDiv.dataset.state = 'aaaaaaa';
 
                     characterContainter.appendChild(characterDiv);
                 }
