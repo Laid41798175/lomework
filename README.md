@@ -12,3 +12,5 @@ https://lomework.netlify.app/
  - 로딩이 되지 않는 버그를 수정했습니다.
 #### 29 APR 24
  - Favicon 🦕을 추가했습니다. 귀엽지 않나요?
+#### 02 MAY 24
+ - BiJoCham의 캐릭터 '중망겜'을 추가했습니다.
