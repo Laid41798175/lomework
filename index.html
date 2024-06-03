@@ -170,12 +170,12 @@
 
     <!-- Contents -->
     <div class="footer" id="footer_content">
-        <div class="content">
+        <!-- <div class="content">
             <img id="content_Valtan" src="images/raids/Valtan.webp" alt="Valtan" onclick="selectValtan()">
         </div>
         <div class="content" id="content_Biackiss">
             <img id="content_Biackiss" src="images/raids/Biackiss.webp" alt="Biackiss" onclick="selectBiackiss()">
-        </div>
+        </div> -->
         <div class="content" id="content_Kouku-Saton">
             <img id="content_Kouku-Saton" src="images/raids/Kouku-Saton.webp" alt="Kouku-Saton" onclick="selectKoukuSaton()">
         </div>
@@ -193,6 +193,12 @@
         </div>
         <div class="content" id="content_Voldis">
             <img id="content_Voldis" src="images/raids/Voldis.webp" alt="Voldis" onclick="selectVoldis()">
+        </div>
+        <div class="content" id="content_Kamen">
+            <img id="content_Kamen" src="images/raids/Kamen.webp" alt="Kamen" onclick="selectKamen()">
+        </div>
+        <div class="content" id="content_Echidna">
+            <img id="content_Echidna" src="images/raids/Echidna.webp" alt="Echidna" onclick="selectEchidna()">
         </div>
     </div>
 
@@ -293,7 +299,9 @@
             "Abrelshud",
             "Kayangel",
             "Illiakan",
-            "Voldis"
+            "Voldis",
+            "Kamen",
+            "Echidna"
         ];
 
         let selectedCharacters = [];
@@ -339,7 +347,7 @@
                     let characterDiv = document.createElement('div');
                     characterDiv.classList.add('character');
                     characterDiv.id = nickname;
-                    characterDiv.dataset.state = 'aaaaaaa';
+                    characterDiv.dataset.state = 'aaaaaaaaa';
 
                     characterContainter.appendChild(characterDiv);
                 }
@@ -745,6 +753,62 @@
             editState(6);
             resetArray();
         }
+
+        function selectKamen() {
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1610) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[7] != 'a') {
+                    showMessage(nickname + " has cleared Kamen already!");
+                    return;
+                }
+            }
+
+            startKamen();
+        }
+
+        function startKamen() {
+            hideModal();
+            editState(7);
+            resetArray();
+        }
+
+        function selectEchidna() {
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let level = character[3];
+                if (level < 1620) {
+                    showMessage("입장 레벨 미달성: " + nickname);
+                    return;
+                }
+            }
+
+            for (let character of selectedCharacters) {
+                let nickname = character[1];
+                let state = document.getElementById(nickname).dataset.state;
+                if (state[8] != 'a') {
+                    showMessage(nickname + " has cleared Echidna already!");
+                    return;
+                }
+            }
+
+            startEchidna();
+        }
+
+        function startEchidna() {
+            hideModal();
+            editState(8);
+            resetArray();
+        }
         
         function clickCharacter(character) {
             if (selectedCharacters.includes(character)) {
@@ -789,7 +853,7 @@
                 let contentImage = document.getElementById(nickname + "_content_" + i);
                 contentImage.style.backgroundImage = '';
             }
-            updateState(owner, nickname, "aaaaaaa");
+            updateState(owner, nickname, "aaaaaaaaa");
         }
         
         function updateState(owner, nickname, newState) {
