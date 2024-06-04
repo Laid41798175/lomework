@@ -27,7 +27,7 @@ const updateEachItem = (items) => {
         '#state': 'state' // 업데이트할 속성명
       },
       ExpressionAttributeValues: {
-        ':newState': 'aaaaaaa' // 새로운 상태값
+        ':newState': 'aaaaaaaaa' // 새로운 상태값
       }
     };
 

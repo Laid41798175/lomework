@@ -18,9 +18,9 @@ const updateEachItem = (items) => {
 items.forEach((item) => {
     let newState;
     if (item['state'][3] === 'b') {
-    newState = 'aaacaaa';
+    newState = 'aaacaaaaa';
     } else {
-    newState = 'aaaaaaa';
+    newState = 'aaaaaaaaa';
     }
 
     const updateParams = {

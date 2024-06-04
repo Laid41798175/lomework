@@ -17,3 +17,5 @@ https://lomework.netlify.app/
 #### 03 JUN 24
  - 카멘, 에키드나를 등록할 수 있습니다.
  - 발탄, 비아키스는 선택할 수 없지만, 여전히 Lomework Bot(https://github.com/Laid41798175/lomework_bot) 를 통해 등록할 수 있습니다!
+#### 05 JUN 24
+ - 리셋을 위한 js 코드가 잘못된 값으로 초기화하는 버그를 수정했습니다.
